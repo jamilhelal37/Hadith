@@ -3,12 +3,17 @@ class Assets {
   Assets._();
 
   static const String fontsCairo = 'assets/fonts/cairo.ttf';
+  static const String imagesBackground1 = 'assets/images/background1.jpg';
+  static const String imagesDrawer = 'assets/images/drawer.png';
   static const String imagesEdited1 = 'assets/images/edited1.jpg';
   static const String imagesEdited2 = 'assets/images/edited2.jpg';
   static const String imagesEdited3 = 'assets/images/edited3.jpg';
   static const String imagesEdited4 = 'assets/images/edited4.jpg';
   static const String imagesEdited5 = 'assets/images/edited5.jpg';
+  static const String imagesLoading1 = 'assets/images/Loading (1).json';
   static const String imagesPic1 = 'assets/images/pic1.png';
+  static const String imagesQuestionmark = 'assets/images/Question mark.json';
+  static const String imagesSearch = 'assets/images/Search.json';
   static const String imagesTechnology = 'assets/images/technology.jpeg';
   static const String imagesUnderConstruction = 'assets/images/under_construction.json';
 
