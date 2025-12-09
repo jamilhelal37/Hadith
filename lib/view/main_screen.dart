@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:untitled1/main.dart';
 import 'package:untitled1/view/bokhari_muslim.dart';
 import 'package:untitled1/helper/assets.dart';
@@ -9,7 +8,7 @@ import 'package:untitled1/view/general_search.dart';
 import 'package:untitled1/view/hadith_screen.dart';
 import 'package:untitled1/view/login_screen.dart';
 import 'package:untitled1/view/profile_screen.dart';
-import 'package:untitled1/view/search_page.dart';
+import 'package:untitled1/view/advanced_search_page.dart';
 import 'package:untitled1/view/wrong_hadiths.dart';
 
 class MainScreen extends StatefulWidget {
