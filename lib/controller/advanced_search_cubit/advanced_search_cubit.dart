@@ -1,5 +1,5 @@
 // advanced_search_cubit.dart
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled1/model/advanced_search_model.dart';
 import '../../services/advanced_search_repo.dart';
 import 'advanced_search_state.dart';
