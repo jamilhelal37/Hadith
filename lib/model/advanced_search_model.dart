@@ -1,5 +1,4 @@
 // advanced_search_model.dart
-import 'dart:convert';
 
 import 'package:untitled1/model/rawi_model.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/main.dart';
+import 'package:untitled1/view/about_muhaddith_screen.dart';
 import 'package:untitled1/view/bokhari_muslim.dart';
 import 'package:untitled1/helper/assets.dart';
 import 'package:untitled1/view/books_sources.dart';
 import 'package:untitled1/view/general_search.dart';
-import 'package:untitled1/view/hadith_screen.dart';
 import 'package:untitled1/view/login_screen.dart';
 import 'package:untitled1/view/profile_screen.dart';
 import 'package:untitled1/view/advanced_search_page.dart';
@@ -178,7 +178,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   Divider(color: Color(0xffd0953b)),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AboutMuhaddithScreen(),));},
                     leading: Icon(
                       Icons.done_outline,
                       color: Color(0xffca9b2c),
@@ -345,7 +345,7 @@ class _MainScreenState extends State<MainScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HadithScreen(),
+                                builder: (context) => GeneralSearch(),
                               ),
                             );
                           },

@@ -19,6 +19,7 @@ class _GeneralSearchState extends State<GeneralSearch> {
   final TextEditingController _searchController = TextEditingController();
   late HadithCubit _hadithCubit;
   final Map<int, bool> _expandedStates = {};
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +43,7 @@ class _GeneralSearchState extends State<GeneralSearch> {
       _expandedStates[hadithId] = !(_expandedStates[hadithId] ?? false);
     });
   }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -142,7 +144,9 @@ class _GeneralSearchState extends State<GeneralSearch> {
                           icon: const Icon(Icons.clear),
                           onPressed: _clearSearch,
                         ),
-                        hintStyle: TextStyle(color: Colors.black.withAlpha(100)),
+                        hintStyle: TextStyle(
+                          color: Colors.black.withAlpha(100),
+                        ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xffd0953b),
@@ -199,9 +203,10 @@ class _GeneralSearchState extends State<GeneralSearch> {
   }
 
   Widget _buildInitialState() {
-    return Column(mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Lottie.asset(height: 150,width: 150,Assets.imagesSearch,),
+        Lottie.asset(height: 150, width: 150, Assets.imagesSearch),
         Center(
           child: Text(
             'اكتب كلمة للبحث في الأحاديث',
@@ -220,9 +225,10 @@ class _GeneralSearchState extends State<GeneralSearch> {
     return Center(
       child: Column(
         children: [
-          SizedBox(height: 16,),
-          Lottie.asset(Assets.imagesLoading1,height: 150,width: 150),
-          Text(textDirection: TextDirection.rtl,
+          SizedBox(height: 16),
+          Lottie.asset(Assets.imagesLoading1, height: 150, width: 150),
+          Text(
+            textDirection: TextDirection.rtl,
             'جاري البحث...',
             style: TextStyle(
               fontFamily: 'cairo',
@@ -239,9 +245,9 @@ class _GeneralSearchState extends State<GeneralSearch> {
     if (hadithModel.data.isEmpty) {
       return Column(
         children: [
-          SizedBox(height: 24,),
-          Lottie.asset(Assets.imagesQuestionmark,width: 100,height: 100),
-          SizedBox(height: 12,),
+          SizedBox(height: 24),
+          Lottie.asset(Assets.imagesQuestionmark, width: 100, height: 100),
+          SizedBox(height: 12),
           Center(
             child: Text(
               'لا توجد نتائج للبحث',
@@ -273,7 +279,8 @@ class _GeneralSearchState extends State<GeneralSearch> {
       color: Colors.white,
       elevation: 2,
       margin: EdgeInsets.only(bottom: 16),
-      child: Directionality(textDirection: TextDirection.rtl,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
         child: ExpansionPanelList(
           elevation: 0,
           expandedHeaderPadding: EdgeInsets.zero,
@@ -290,15 +297,23 @@ class _GeneralSearchState extends State<GeneralSearch> {
                     children: [
                       // Hadith Text
                       if (hadith.hadithText != null)
-                        Text(
-                          hadith.hadithText!,
-                          textDirection: TextDirection.rtl,
-                          maxLines: 100,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'cairo',
-                            fontSize: 16,
-                            height: 1.5,
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: Text(
+                            hadith.hadithText!,
+                            textDirection: TextDirection.rtl,
+                            maxLines: 100,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'cairo',
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
                           ),
                         ),
 
@@ -313,7 +328,9 @@ class _GeneralSearchState extends State<GeneralSearch> {
                               'الكتاب: ${hadith.book!.name!}',
                               style: TextStyle(
                                 fontFamily: 'cairo',
-                                fontSize: hadith.book!.name!.length> 15?10:13,
+                                fontSize: hadith.book!.name!.length > 15
+                                    ? 10
+                                    : 13,
                                 color: Colors.grey[700],
                               ),
                             ),
@@ -328,18 +345,32 @@ class _GeneralSearchState extends State<GeneralSearch> {
                             ),
                         ],
                       ),
-                      Row(children: [
-                        if (hadith.rawi?.name != null)
-                          Text(
-                            'الراوي: ${hadith.rawi!.name!}',
-                            style: TextStyle(
-                              fontFamily: 'cairo',
-                              fontSize: 14,
-                              color: Colors.grey[700],
+                      Row(
+                        children: [
+                          if (hadith.rawi?.name != null)
+                            Text(
+                              'الراوي: ${hadith.rawi!.name!}',
+                              style: TextStyle(
+                                fontFamily: 'cairo',
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
                             ),
-                          ),
-
-                      ],)
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          if (hadith.hadithNumber?.toString() != null)
+                            Text(
+                              'رقم الحديث: ${hadith.hadithNumber!}',
+                              style: TextStyle(
+                                fontFamily: 'cairo',
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 );
@@ -390,7 +421,7 @@ class _GeneralSearchState extends State<GeneralSearch> {
                     // Add other details here (rulings, etc.)
                     if (hadith.rulingOfMuhaddith?.text != null)
                       Row(
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (hadith.book?.name != null)
                             Text(
@@ -423,7 +454,8 @@ class _GeneralSearchState extends State<GeneralSearch> {
       ),
     );
   }
-// In your _GeneralSearchState class, update the _buildErrorState method:
+
+  // In your _GeneralSearchState class, update the _buildErrorState method:
 
   Widget _buildErrorState(String message) {
     return Center(
@@ -432,7 +464,7 @@ class _GeneralSearchState extends State<GeneralSearch> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           Lottie.asset(Assets.imagesQuestionmark,width: 100,height: 100),
+            Lottie.asset(Assets.imagesQuestionmark, width: 100, height: 100),
             SizedBox(height: 16),
             Text(
               'خطأ في الاتصال',
@@ -445,7 +477,8 @@ class _GeneralSearchState extends State<GeneralSearch> {
             ),
             SizedBox(height: 12),
 
-            Text(textDirection: TextDirection.rtl,
+            Text(
+              textDirection: TextDirection.rtl,
               'يرجى التأكد من أن:',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -456,7 +489,8 @@ class _GeneralSearchState extends State<GeneralSearch> {
               ),
             ),
             SizedBox(height: 8),
-            Text(textDirection: TextDirection.rtl,
+            Text(
+              textDirection: TextDirection.rtl,
               '• عنوان API صحيح\n• اتصال بالإنترنت\n• أن الخادم يعمل',
               textAlign: TextAlign.center,
               style: TextStyle(
