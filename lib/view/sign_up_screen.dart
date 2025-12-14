@@ -24,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailCont = TextEditingController();
   TextEditingController passWordCont = TextEditingController();
   TextEditingController confCont = TextEditingController();
+  String? _selectedGender = 'male';
 
   final formKey = GlobalKey<FormState>();
 
@@ -43,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.blue, // button text color
+                foregroundColor: Colors.blue,
               ),
             ),
           ),
@@ -81,367 +82,432 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   textDirection: TextDirection.rtl,
                   child: Form(
                     key: formKey,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 150,
-                          width: 150,
-                          child: Image(image: AssetImage(Assets.imagesPic1)),
-                        ),
-                        Text(
-                          'انشئ حسابك',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'cairo',
-                            color: Color(0xffd0953b),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 150,
+                            width: 150,
+                            child: Image(image: AssetImage(Assets.imagesPic1)),
                           ),
-                        ),
 
-                        SizedBox(
-                          height: 400,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedBox(height: 24),
-                                SizedBox(
-                                  width: 250,
-                                  child: TextFormField(
-                                    controller: nameCont,
-                                    validator: (val) {
-                                      if (nameCont.text.length < 2) {
-                                        return "invalid name";
-                                      }
-                                      return null;
-                                    },
-                                    textAlign: TextAlign.right,
-                                    cursorColor: Color(0xffd0953b),
-                                    decoration: InputDecoration(
-                                      labelText: 'الاسم',
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'cairo',
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
+                          SizedBox(height: 600,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'انشئ حسابك',
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      fontFamily: 'cairo',
+                                      color: Color(0xffd0953b),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: 250,
-                                  child: TextFormField(
-                                    controller: emailCont,
-                                    validator: (val) {
-                                      if (!emailCont.text.contains(
-                                        '@gmail.com',
-                                      )) {
-                                        return 'invalid email';
-                                      }
-                                      return null;
-                                    },
-                                    textAlign: TextAlign.right,
-                                    cursorColor: Color(0xffd0953b),
-                                    decoration: InputDecoration(
-                                      labelText: 'البريد الالكتروني',
-                                      floatingLabelAlignment:
-                                          FloatingLabelAlignment.center,
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'cairo',
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: 250,
-                                  child: TextFormField(
-                                    controller: passWordCont,
-                                    validator: (val) {
-                                      if (passWordCont.text.length < 6) {
-                                        return "password most be greater than 8 ";
-                                      }
-                                      return null;
-                                    },
-                                    obscureText: enText,
-                                    textDirection: TextDirection.rtl,
-                                    textAlign: TextAlign.right,
-                                    cursorColor: Color(0xffd0953b),
-                                    decoration: InputDecoration(
-                                      suffix: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            enText = enText ? false : true;
-                                            isClosed = isClosed ? false : true;
-                                          });
-                                        },
-                                        child: Icon(
-                                          color: Color(0xffd0953b),
-                                          isClosed
-                                              ? CupertinoIcons.eye
-                                              : CupertinoIcons.eye_slash,
-                                        ),
-                                      ),
-                                      labelText: 'كلمة المرور',
-                                      floatingLabelAlignment:
-                                          FloatingLabelAlignment.center,
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'cairo',
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: 250,
-                                  child: TextFormField(
-                                    controller: confCont,
-                                    validator: (val) {
-                                      if (confCont.text.isEmpty ||
-                                          confCont.text != passWordCont.text) {
-                                        return "wrong password";
-                                      }
-                                      return null;
-                                    },
-                                    obscureText: enText,
-                                    textDirection: TextDirection.rtl,
-                                    textAlign: TextAlign.right,
-                                    cursorColor: Color(0xffd0953b),
-                                    decoration: InputDecoration(
-                                      suffix: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            enText = enText ? false : true;
-                                            isClosed = isClosed ? false : true;
-                                          });
-                                        },
-                                        child: Icon(
-                                          color: Color(0xffd0953b),
-                                          isClosed
-                                              ? CupertinoIcons.eye
-                                              : CupertinoIcons.eye_slash,
-                                        ),
-                                      ),
-                                      labelText: 'تأكيد كلمة المرور',
-                                      floatingLabelAlignment:
-                                          FloatingLabelAlignment.center,
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'cairo',
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                SizedBox(
-                                  width: 250,
-                                  child: TextFormField(
-                                    controller: dateController,
-                                    validator: (val) {
-                                      if (val == null || val.isEmpty) {
-                                        return 'please select your date';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.calendar_today,
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      labelText: 'تاريخ الميلاد',
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'cairo',
-                                        color: Color(0xffd0953b),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          width: 2,
-                                          color: Color(0xffd0953b),
-                                        ),
-                                      ),
-                                    ),
-                                    readOnly: true,
-                                    onTap: () => _selectDate(context),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
 
-                        SizedBox(height: 16),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'هل لديك حساب بالفعل؟',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                        Spacer(flex: 1),
-                        InkWell(
-                          onTap: () async {
-                            if (formKey.currentState!.validate()) {
-                              final RegesterModel model = RegesterModel(
-                                name: nameCont.text,
-                                gender: "male",
-                                date: dateController.text,
-                                password: passWordCont.text,
-                                email: emailCont.text,
-                              );
+                                  SizedBox(height: 24),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextFormField(
+                                      controller: nameCont,
+                                      validator: (val) {
+                                        if (nameCont.text.length < 2) {
+                                          return "invalid name";
+                                        }
+                                        return null;
+                                      },
+                                      textAlign: TextAlign.right,
+                                      cursorColor: Color(0xffd0953b),
+                                      decoration: InputDecoration(
+                                        labelText: 'الاسم',
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'cairo',
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextFormField(
+                                      controller: emailCont,
+                                      validator: (val) {
+                                        if (!emailCont.text.contains(
+                                          '@gmail.com',
+                                        )) {
+                                          return 'invalid email';
+                                        }
+                                        return null;
+                                      },
+                                      textAlign: TextAlign.right,
+                                      cursorColor: Color(0xffd0953b),
+                                      decoration: InputDecoration(
+                                        labelText: 'البريد الالكتروني',
+                                        floatingLabelAlignment:
+                                        FloatingLabelAlignment.center,
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'cairo',
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextFormField(
+                                      controller: passWordCont,
+                                      validator: (val) {
+                                        if (passWordCont.text.length < 6) {
+                                          return "password most be greater than 8 ";
+                                        }
+                                        return null;
+                                      },
+                                      obscureText: enText,
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.right,
+                                      cursorColor: Color(0xffd0953b),
+                                      decoration: InputDecoration(
+                                        suffix: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              enText = enText ? false : true;
+                                              isClosed = isClosed ? false : true;
+                                            });
+                                          },
+                                          child: Icon(
+                                            color: Color(0xffd0953b),
+                                            isClosed
+                                                ? CupertinoIcons.eye
+                                                : CupertinoIcons.eye_slash,
+                                          ),
+                                        ),
+                                        labelText: 'كلمة المرور',
+                                        floatingLabelAlignment:
+                                        FloatingLabelAlignment.center,
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'cairo',
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextFormField(
+                                      controller: confCont,
+                                      validator: (val) {
+                                        if (confCont.text.isEmpty ||
+                                            confCont.text != passWordCont.text) {
+                                          return "wrong password";
+                                        }
+                                        return null;
+                                      },
+                                      obscureText: enText,
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.right,
+                                      cursorColor: Color(0xffd0953b),
+                                      decoration: InputDecoration(
+                                        suffix: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              enText = enText ? false : true;
+                                              isClosed = isClosed ? false : true;
+                                            });
+                                          },
+                                          child: Icon(
+                                            color: Color(0xffd0953b),
+                                            isClosed
+                                                ? CupertinoIcons.eye
+                                                : CupertinoIcons.eye_slash,
+                                          ),
+                                        ),
+                                        labelText: 'تأكيد كلمة المرور',
+                                        floatingLabelAlignment:
+                                        FloatingLabelAlignment.center,
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'cairo',
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextFormField(
+                                      controller: dateController,
+                                      validator: (val) {
+                                        if (val == null || val.isEmpty) {
+                                          return 'please select your date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                        suffixIcon: Icon(
+                                          Icons.calendar_today,
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        labelText: 'تاريخ الميلاد',
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'cairo',
+                                          color: Color(0xffd0953b),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                          borderSide: BorderSide(
+                                            width: 2,
+                                            color: Color(0xffd0953b),
+                                          ),
+                                        ),
+                                      ),
+                                      readOnly: true,
+                                      onTap: () => _selectDate(context),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
 
-                              var res = await BlocProvider.of<RegisterCubit>(
-                                context,
-                              ).register(model);
-                              if (state is RegisterSuccess || res) {
-                                toastification.show(
-                                  context: context,
-                                  title: Text('تم انشاء الحساب '),
-                                  autoCloseDuration: const Duration(seconds: 5),
-                                );
-                                Navigator.pop(context);
-                              } else {
-                                toastification.show(
-                                  context: context,
-                                  title: Text('حدث خطأ'),
-                                  autoCloseDuration: const Duration(seconds: 5),
-                                );
-                              }
-                            }
-                          },
-                          child: Container(
-                            width: 200,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Color(0xffd0953b),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'إنشاء',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontFamily: 'cairo',
-                                ),
+                                  // Gender Selection Radio Buttons
+                                  SizedBox(
+                                    width: 250,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            // Male Radio Button
+                                            Row(
+                                              children: [
+                                                Radio<String>(
+                                                  value: 'male',
+                                                  groupValue: _selectedGender,
+                                                  activeColor: Color(0xffd0953b),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedGender = value;
+                                                    });
+                                                  },
+                                                ),
+                                                Text(
+                                                  'ذكر',
+                                                  style: TextStyle(
+                                                    fontFamily: 'cairo',
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(width: 20),
+                                            // Female Radio Button
+                                            Row(
+                                              children: [
+                                                Radio<String>(
+                                                  value: 'female',
+                                                  groupValue: _selectedGender,
+                                                  activeColor: Color(0xffd0953b),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedGender = value;
+                                                    });
+                                                  },
+                                                ),
+                                                Text(
+                                                  'أنثى',
+                                                  style: TextStyle(
+                                                    fontFamily: 'cairo',
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 8),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'هل لديك حساب بالفعل؟',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16,),
+                                  InkWell(
+                                    onTap: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        final RegesterModel model = RegesterModel(
+                                          name: nameCont.text,
+                                          gender: _selectedGender ?? 'male',
+                                          date: dateController.text,
+                                          password: passWordCont.text,
+                                          email: emailCont.text,
+                                        );
+
+                                        var res = await BlocProvider.of<RegisterCubit>(
+                                          context,
+                                        ).register(model);
+                                        if (state is RegisterSuccess || res) {
+                                          toastification.show(
+                                            context: context,
+                                            title: Text('تم انشاء الحساب '),
+                                            autoCloseDuration: const Duration(seconds: 5),
+                                          );
+                                          Navigator.pop(context);
+                                        } else {
+                                          toastification.show(
+                                            context: context,
+                                            title: Text('حدث خطأ'),
+                                            autoCloseDuration: const Duration(seconds: 5),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 200,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffd0953b),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'إنشاء',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontFamily: 'cairo',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                        Spacer(flex: 2),
-                      ],
+
+                        ],
+                      ),
                     ),
                   ),
                 ),

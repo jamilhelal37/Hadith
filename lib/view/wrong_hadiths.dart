@@ -16,20 +16,10 @@ class WrongHadiths extends StatefulWidget {
 }
 
 class _WrongHadithsState extends State<WrongHadiths> {
-  tt() async {
-    List<FakeHadethModel> model = await FakeHadethRepo().getFakeHadeth();
-    print(model);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // tt();
-  }
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-
     BlocProvider.of<FakeHadethCubit>(context).getFakeHadeths();
     return Scaffold(
       backgroundColor: Color(0xfffffde8),
@@ -49,7 +39,6 @@ class _WrongHadithsState extends State<WrongHadiths> {
                       child: SizedBox(
                         height: 50,
                         width: 50,
-
                         child: Icon(Icons.arrow_back, color: Color(0xffd0953b)),
                       ),
                     ),
@@ -61,34 +50,20 @@ class _WrongHadithsState extends State<WrongHadiths> {
                         fontSize: 25,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: SizedBox(
-                            height: 50,
-                            width: 40,
-
-                            child: Icon(
-                              CupertinoIcons.search,
-                              color: Color(0xffd0953b),
-                            ),
-                          ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                      child: SizedBox(
+                        height: 50,
+                        width: 40,
+                        child: Icon(
+                          CupertinoIcons.search,
+                          color: Color(0xffd0953b),
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: SizedBox(
-                            height: 50,
-                            width: 40,
-
-                            child: Icon(
-                              CupertinoIcons.moon,
-                              color: Color(0xffd0953b),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -112,6 +87,42 @@ class _WrongHadithsState extends State<WrongHadiths> {
                 ),
               ),
               SizedBox(height: 12),
+              if (isExpanded)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      cursorColor: Color(0xffd0953b),
+                      textDirection: TextDirection.rtl,
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(
+                          color: Colors.black.withAlpha(100),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xffd0953b),
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xffd0953b),
+                            width: 2,
+                          ),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xffd0953b),
+                            width: 2,
+                          ),
+                        ),
+                        hintTextDirection: TextDirection.rtl,
+                        hintText: 'ابحث عن الحديث',
+                      ),
+                    ),
+                  ),
+                ),
               Expanded(
                 child: state is FakeHadethLooding
                     ? SizedBox(
@@ -120,32 +131,32 @@ class _WrongHadithsState extends State<WrongHadiths> {
                         child: Lottie.asset(Assets.imagesLoading1),
                       )
                     : state is FakeHadethSuccess
-                    ? ListView.builder(
-                        itemCount: state.fake_hadeths.length,
-                        itemBuilder: (context, index) {
-                          return FakeHadethItem(
-                            fake_model: state.fake_hadeths[index],
-                          );
-                        },
-                      )
-                    : Column(
-                        children: [
-                          SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: Lottie.asset(Assets.imagesQuestionmark),
+                        ? ListView.builder(
+                            itemCount: state.fake_hadeths.length,
+                            itemBuilder: (context, index) {
+                              return FakeHadethItem(
+                                fake_model: state.fake_hadeths[index],
+                              );
+                            },
+                          )
+                        : Column(
+                            children: [
+                              SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: Lottie.asset(Assets.imagesQuestionmark),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'لم يتم العثور على نتائج',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'cairo',
+                                  color: Color(0xffd0953b),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            'لم يتم العثور على نتائج',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'cairo',
-                              color: Color(0xffd0953b),
-                            ),
-                          ),
-                        ],
-                      ),
               ),
             ],
           );
@@ -155,56 +166,134 @@ class _WrongHadithsState extends State<WrongHadiths> {
   }
 }
 
-class FakeHadethItem extends StatelessWidget {
+class FakeHadethItem extends StatefulWidget {
   const FakeHadethItem({super.key, required this.fake_model});
 
   final FakeHadethModel fake_model;
 
   @override
-  Widget build(BuildContext context) {
+  State<FakeHadethItem> createState() => _FakeHadethItemState();
+}
 
-    return Directionality(textDirection: TextDirection.rtl,
+class _FakeHadethItemState extends State<FakeHadethItem> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Container(
-          width: 300,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
-              BoxShadow(color: Colors.black.withAlpha(50), spreadRadius: 1, blurRadius: 1),
+              BoxShadow(
+                color: Colors.black.withAlpha(50),
+                spreadRadius: 1,
+                blurRadius: 1,
+              ),
             ],
           ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // النص الرئيسي
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(fake_model.text!,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,fontFamily: 'cairo',),),
+                child: Text(
+                  widget.fake_model.text!,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'cairo',
+                  ),
+                ),
               ),
+              // الحكم
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
-                child: Text('الحكم :${fake_model.ruling!.text!}',style: TextStyle(fontSize: 15,fontFamily: 'cairo',),),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: Text(
+                  'الحكم :${widget.fake_model.ruling!.text!}',
+                  style: TextStyle(fontSize: 15, fontFamily: 'cairo'),
+                ),
               ),
+              // ExpansionPanel لعرض subValid
+              if (widget.fake_model.subValid != null &&
+                  widget.fake_model.subValid!.text != null &&
+                  widget.fake_model.subValid!.text!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Color(0xffd0953b).withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: ExpansionTile(
+                      title: Text(
+                        'الصحيح البديل',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'cairo',
+                          color: Color(0xffd0953b),
+                        ),
+                      ),
+                      tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                      childrenPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      initiallyExpanded: false,
+                      onExpansionChanged: (expanded) {
+                        setState(() {
+                          _isExpanded = expanded;
+                        });
+                      },
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            widget.fake_model.subValid!.text!,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'cairo',
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              // الأزرار في الأسفل
               Padding(
-                padding: const EdgeInsets.only(left: 4),
+                padding: const EdgeInsets.only(left: 4, top: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                       color: Color(0xffd0953b),
-                      icon: Icon(size: 28,Icons.share),
+                      icon: Icon(size: 28, Icons.share),
                       onPressed: () {},
                     ),
                     Container(
                       width: 65,
                       height: 45,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(14),color: Color(0xffd0953b)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Color(0xffd0953b),
+                      ),
                       child: Icon(Icons.copy, color: Colors.white),
                     ),
                   ],
                 ),
               ),
-
             ],
           ),
         ),

@@ -51,37 +51,49 @@ class _AboutMuhaddithScreenState extends State<AboutMuhaddithScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfffffde8),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Icon(Icons.arrow_back, color: Color(0xffd0953b)),
-                  ),
-                ),
-                Text(
-                  'تراجم المحدثين',
-                  style: TextStyle(
-                    color: Color(0xffd0953b),
-                    fontFamily: 'cairo',
-                    fontSize: 25,
-                  ),
-                ),
-                SizedBox(height: 50, width: 50),
-              ],
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(Assets.imagesBg4),
+            fit: BoxFit.fill,
           ),
-          Expanded(child: _buildBody()),
-        ],
+          boxShadow: [BoxShadow(color: Colors.grey,blurRadius: 5,offset: Offset(5, 0))]
+        ),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(color: Color(0xfffffde8)),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Icon(Icons.arrow_back, color: Color(0xffd0953b)),
+                      ),
+                    ),
+                    Text(
+                      'تراجم المحدثين',
+                      style: TextStyle(
+                        color: Color(0xffd0953b),
+                        fontFamily: 'cairo',
+                        fontSize: 25,
+                      ),
+                    ),
+                    SizedBox(height: 50, width: 50),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(child: _buildBody()),
+          ],
+        ),
       ),
     );
   }
@@ -100,11 +112,11 @@ class _AboutMuhaddithScreenState extends State<AboutMuhaddithScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          SizedBox(
-          width: 150,
-          height: 150,
-          child: LottieBuilder.asset(Assets.imagesQuestionmark),
-        ),
+            SizedBox(
+              width: 150,
+              height: 150,
+              child: LottieBuilder.asset(Assets.imagesQuestionmark),
+            ),
             Text(
               'خطأ في تحميل البيانات',
               style: TextStyle(
@@ -153,8 +165,8 @@ class _AboutMuhaddithScreenState extends State<AboutMuhaddithScreen> {
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 10,
         childAspectRatio: 0.9,
       ),
       itemCount: _muhaddiths.length,
@@ -195,17 +207,18 @@ class _MuhaddithCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withAlpha(100)
+            color: Color(0xfffffde8),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Spacer(),
+            children: [
+              Spacer(),
               const SizedBox(height: 12),
               Text(
                 muhaddith.name ?? 'غير معروف',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily:'cairo',
+                  fontFamily: 'cairo',
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   color: Color(0xffd0953b),

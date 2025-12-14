@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 import 'package:untitled1/controller/advanced_search_cubit/advanced_search_cubit.dart';
 import 'package:untitled1/controller/fake_hadeth_cubit/fake_hadeth_cubit.dart';
+import 'package:untitled1/controller/favorate_cubit.dart/favorate_cubit.dart';
 import 'package:untitled1/controller/outh_cubit/auth_cubit.dart';
 import 'package:untitled1/controller/register_cubit/register_cubit.dart';
 import 'package:untitled1/model/fake_hadeth_model.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => AuthCubit()),
           BlocProvider(create: (context) => RegisterCubit()),
           BlocProvider(create: (context) => AdvancedSearchCubit(AdvancedSearchRepository())),
-          BlocProvider(create: (context) => FakeHadethCubit(),)
+          BlocProvider(create: (context) => FakeHadethCubit(),),
+          BlocProvider(create: (context) => FavoriteCubit(),)
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,5 +1,5 @@
 // advanced_search_cubit.dart
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:untitled1/model/advanced_search_model.dart';
 import '../../services/advanced_search_repo.dart';
 import 'advanced_search_state.dart';
@@ -14,17 +14,20 @@ class AdvancedSearchCubit extends Cubit<AdvancedSearchState> {
 
   Future<void> search({
     String? query,
+    String? type,
     int? muhaddithId,
     int? rawiId,
     int? subjectId,
     int? bookId,
     int? rulingId,
   }) async {
+   emit(const AdvancedSearchLoading());
     try {
       final request = AdvancedSearchRequest(
         query: query,
         muhaddithId: muhaddithId,
         rawiId: rawiId,
+        type: type,
         subjectId: subjectId,
         bookId: bookId,
         rulingId: rulingId,
@@ -33,7 +36,8 @@ class AdvancedSearchCubit extends Cubit<AdvancedSearchState> {
       );
 
       _currentRequest = request;
-      emit(const AdvancedSearchLoading());
+    
+
       final response = await _repository.advancedSearch(request);
       _currentResponse = response;
 

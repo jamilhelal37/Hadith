@@ -4,6 +4,8 @@ class Assets {
 
   static const String fontsCairo = 'assets/fonts/cairo.ttf';
   static const String imagesBackground1 = 'assets/images/background1.jpg';
+  static const String imagesBg3 = 'assets/images/bg3.jpeg';
+  static const String imagesBg4 = 'assets/images/bg4.jpeg';
   static const String imagesDrawer = 'assets/images/drawer.png';
   static const String imagesEdited1 = 'assets/images/edited1.jpg';
   static const String imagesEdited2 = 'assets/images/edited2.jpg';

@@ -1,8 +1,8 @@
 // advanced_search_model.dart
+import 'dart:convert';
 
 import 'package:untitled1/model/rawi_model.dart';
-
-import 'book_model.dart';
+import 'package:untitled1/model/book_model.dart';
 
 class AdvancedSearchRequest {
   final String? query;
@@ -12,9 +12,11 @@ class AdvancedSearchRequest {
   final int? bookId;
   final int? rulingId;
   final int page;
+  String? type;
   final int limit;
 
   AdvancedSearchRequest({
+    this.type,
     this.query,
     this.muhaddithId,
     this.rawiId,
@@ -26,29 +28,27 @@ class AdvancedSearchRequest {
   });
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{
-      'page': page,
-      'limit': limit,
-    };
+    final map = <String, dynamic>{'page': page, 'limit': limit};
 
-    if (query != null && query!.isNotEmpty) {
-      map['query'] = query;
-    }
-    if (muhaddithId != null) {
-      map['muhaddith_id'] = muhaddithId;
-    }
-    if (rawiId != null) {
-      map['rawi_id'] = rawiId;
-    }
-    if (subjectId != null) {
-      map['subject_id'] = subjectId;
-    }
-    if (bookId != null) {
-      map['book_id'] = bookId;
-    }
-    if (rulingId != null) {
-      map['ruling_id'] = rulingId;
-    }
+     if (query != null && query!.isNotEmpty) {
+    map['text'] = query;
+      }
+      if (muhaddithId != null) {
+    map['muhaddith'] = muhaddithId;
+       }
+       if (rawiId != null) {
+    map['rawi'] = rawiId;
+     }
+     if (subjectId != null) {
+    map['topic'] =subjectId;
+      }
+       if (bookId != null) {
+    map['book'] = bookId;
+       }
+      if (rulingId != null) {
+    map['rul'] = rulingId;
+       }
+    map['type'] = type;
 
     return map;
   }
@@ -58,16 +58,27 @@ class ExplainingModel {
   final int id;
   final String text;
 
-  ExplainingModel({
-    required this.id,
-    required this.text,
-  });
+  ExplainingModel({required this.id, required this.text});
 
   factory ExplainingModel.fromJson(Map<String, dynamic> json) {
     return ExplainingModel(
-      id: json['id'] ?? 0,
-      text: json['text'] ?? '',
+      id: _parseInt(json['id']) ?? 0,
+      text: _parseString(json['text'] ?? ''),
     );
+  }
+
+  static String _parseString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    return value.toString();
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value);
+    if (value is double) return value.toInt();
+    return null;
   }
 }
 
@@ -75,16 +86,27 @@ class RulingOfMuhaddithModel {
   final int id;
   final String text;
 
-  RulingOfMuhaddithModel({
-    required this.id,
-    required this.text,
-  });
+  RulingOfMuhaddithModel({required this.id, required this.text});
 
   factory RulingOfMuhaddithModel.fromJson(Map<String, dynamic> json) {
     return RulingOfMuhaddithModel(
-      id: json['id'] ?? 0,
-      text: json['text'] ?? '',
+      id: _parseInt(json['id']) ?? 0,
+      text: _parseString(json['text']),
     );
+  }
+
+  static String _parseString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    return value.toString();
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value);
+    if (value is double) return value.toInt();
+    return null;
   }
 }
 
@@ -92,16 +114,27 @@ class FinalRulingModel {
   final int id;
   final String text;
 
-  FinalRulingModel({
-    required this.id,
-    required this.text,
-  });
+  FinalRulingModel({required this.id, required this.text});
 
   factory FinalRulingModel.fromJson(Map<String, dynamic> json) {
     return FinalRulingModel(
-      id: json['id'] ?? 0,
-      text: json['text'] ?? '',
+      id: _parseInt(json['id']) ?? 0,
+      text: _parseString(json['text']),
     );
+  }
+
+  static String _parseString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    return value.toString();
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value);
+    if (value is double) return value.toInt();
+    return null;
   }
 }
 
@@ -115,6 +148,7 @@ class AdvancedSearchResult {
   final ExplainingModel? explaining;
   final RulingOfMuhaddithModel? rulingOfMuhaddith;
   final FinalRulingModel? finalRuling;
+  bool isFavorite; // Add this field
 
   AdvancedSearchResult({
     required this.id,
@@ -126,14 +160,15 @@ class AdvancedSearchResult {
     this.explaining,
     this.rulingOfMuhaddith,
     this.finalRuling,
+    this.isFavorite=false
   });
 
   factory AdvancedSearchResult.fromJson(Map<String, dynamic> json) {
     return AdvancedSearchResult(
-      id: json['id'] ?? 0,
-      hadithType: json['HadithType'] ?? '',
-      hadithText: json['HadithText'] ?? '',
-      hadithNumber: json['HadithNumber'] ?? 0,
+      id: _parseInt(json['id']) ?? 0,
+      hadithType: _parseString(json['HadithType']),
+      hadithText: _parseString(json['HadithText']),
+      hadithNumber: _parseInt(json['HadithNumber']) ?? 0,
       book: json['book'] != null ? BookModel.fromJson(json['book']) : null,
       rawi: json['rawi'] != null ? RawiModel.fromJson(json['rawi']) : null,
       explaining: json['explaining'] != null
@@ -145,39 +180,160 @@ class AdvancedSearchResult {
       finalRuling: json['final_ruling'] != null
           ? FinalRulingModel.fromJson(json['final_ruling'])
           : null,
+      isFavorite: json['is_favorite'] ?? false, // Parse from API if available
     );
+  }
+
+  static String _parseString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    return value.toString();
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value);
+    if (value is double) return value.toInt();
+    return 0;
   }
 }
 
 class AdvancedSearchResponse {
   final List<AdvancedSearchResult> data;
-  final int? total;
-  final int? page;
-  final int? totalPages;
-  final bool? hasMore;
+  final int total;
+  final int page;
+  final int totalPages;
+  final bool hasMore;
 
   AdvancedSearchResponse({
     required this.data,
-    this.total,
-    this.page,
-    this.totalPages,
-    this.hasMore,
+    required this.total,
+    required this.page,
+    required this.totalPages,
+    required this.hasMore,
   });
 
   factory AdvancedSearchResponse.fromJson(Map<String, dynamic> json) {
-    final data = <AdvancedSearchResult>[];
-    if (json['data'] != null) {
-      json['data'].forEach((v) {
-        data.add(AdvancedSearchResult.fromJson(v));
-      });
-    }
+    try {
+      // Debug: طباعة أنواع البيانات للتحقق
+      // if (kDebugMode) {
+      //   print('=== Parsing AdvancedSearchResponse ===');
+      //   print('total: ${json['total']} (type: ${json['total']?.runtimeType})');
+      //   print('page: ${json['page']} (type: ${json['page']?.runtimeType})');
+      //   print('total_pages: ${json['total_pages']} (type: ${json['total_pages']?.runtimeType})');
+      //   print('has_more: ${json['has_more']} (type: ${json['has_more']?.runtimeType})');
+      // }
 
-    return AdvancedSearchResponse(
-      data: data,
-      total: json['total'],
-      page: json['page'],
-      totalPages: json['total_pages'],
-      hasMore: json['has_more'],
-    );
+      // تحويل البيانات
+      final List<AdvancedSearchResult> data = [];
+      if (json['data'] != null && json['data'] is List) {
+        for (var item in json['data']) {
+          if (item is Map<String, dynamic>) {
+            try {
+              data.add(AdvancedSearchResult.fromJson(item));
+            } catch (e) {
+              // if (kDebugMode) {
+              //   print('Error parsing search result item: $e');
+              //   print('Item data: $item');
+              // }
+            }
+          }
+        }
+      }
+
+      return AdvancedSearchResponse(
+        data: data,
+        total: _parseInt(json['total']) ?? 0,
+        page: _parseInt(json['page']) ?? 1,
+        totalPages: _parseInt(json['total_pages']) ?? 1,
+        hasMore: _parseBool(json['has_more']),
+      );
+    } catch (e, stackTrace) {
+      // if (kDebugMode) {
+      //   print('Error in AdvancedSearchResponse.fromJson: $e');
+      //   print('Stack trace: $stackTrace');
+      //   print('JSON data: $json');
+      // }
+      // إرجاع رد فارغ في حالة الخطأ
+      return AdvancedSearchResponse(
+        data: [],
+        total: 0,
+        page: 1,
+        totalPages: 1,
+        hasMore: false,
+      );
+    }
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) {
+      // محاولة تحويل السلسلة إلى int
+      return int.tryParse(value);
+    }
+    if (value is double) return value.toInt();
+    if (value is bool) return value ? 1 : 0;
+    return null;
+  }
+
+  static bool _parseBool(dynamic value) {
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value is String) {
+      final lowerValue = value.toLowerCase();
+      return lowerValue == 'true' || lowerValue == '1';
+    }
+    if (value is int) return value == 1;
+    if (value is double) return value == 1.0;
+    return false;
+  }
+
+  // دالة لتحويل النموذج إلى JSON إذا احتجتها
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data.map((item) => item.toJson()).toList(),
+      'total': total,
+      'page': page,
+      'total_pages': totalPages,
+      'has_more': hasMore,
+    };
+  }
+}
+
+// إضافة دالة toJson للـ AdvancedSearchResult إذا لم تكن موجودة
+extension AdvancedSearchResultExtension on AdvancedSearchResult {
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'HadithType': hadithType,
+      'HadithText': hadithText,
+      'HadithNumber': hadithNumber,
+      'book': book?.toJson(),
+      'rawi': rawi?.toJson(),
+      'explaining': explaining?.toJson(),
+      'ruling_of_muhaddith': rulingOfMuhaddith?.toJson(),
+      'final_ruling': finalRuling?.toJson(),
+    };
+  }
+}
+
+// إضافة دوال toJson للنماذج الأخرى
+extension ExplainingModelExtension on ExplainingModel {
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'text': text};
+  }
+}
+
+extension RulingOfMuhaddithModelExtension on RulingOfMuhaddithModel {
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'text': text};
+  }
+}
+
+extension FinalRulingModelExtension on FinalRulingModel {
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'text': text};
   }
 }

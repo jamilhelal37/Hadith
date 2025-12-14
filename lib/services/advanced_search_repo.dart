@@ -5,7 +5,8 @@ import 'package:untitled1/model/advanced_search_model.dart';
 class AdvancedSearchRepository {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'https://apibykassem.onrender.com', // Replace with your API base URL
+      baseUrl:
+          'https://apibykassem.onrender.com', // Replace with your API base URL
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -16,10 +17,10 @@ class AdvancedSearchRepository {
   );
 
   Future<AdvancedSearchResponse> advancedSearch(
-      AdvancedSearchRequest request,
-      ) async {
+    AdvancedSearchRequest request,
+  ) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.get(
         '/api/advanced_search', // Adjust endpoint as needed
         data: request.toJson(),
       );

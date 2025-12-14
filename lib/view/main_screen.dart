@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/main.dart';
 import 'package:untitled1/view/about_muhaddith_screen.dart';
-import 'package:untitled1/view/bokhari_muslim.dart';
 import 'package:untitled1/helper/assets.dart';
 import 'package:untitled1/view/books_sources.dart';
 import 'package:untitled1/view/general_search.dart';
 import 'package:untitled1/view/login_screen.dart';
 import 'package:untitled1/view/profile_screen.dart';
 import 'package:untitled1/view/advanced_search_page.dart';
+import 'package:untitled1/view/favorate_hadeth_screen.dart';
 import 'package:untitled1/view/wrong_hadiths.dart';
+
+import '../model/user_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -112,34 +114,11 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   Divider(color: Color(0xffd0953b)),
-
                   ListTile(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => BokhariMuslim(),
-                        ),
-                      );
-                    },
-                    leading: Icon(Icons.menu_book, color: Color(0xffca9b2c)),
-                    title: Text(
-                      'البخاري و مسلم',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'cairo',
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Divider(color: Color(0xffd0953b)),
-                  ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WrongHadiths(),
-                        ),
+                        MaterialPageRoute(builder: (context) => WrongHadiths()),
                       );
                     },
                     leading: Icon(
@@ -178,11 +157,15 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   Divider(color: Color(0xffd0953b)),
                   ListTile(
-                    onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AboutMuhaddithScreen(),));},
-                    leading: Icon(
-                      Icons.done_outline,
-                      color: Color(0xffca9b2c),
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AboutMuhaddithScreen(),
+                        ),
+                      );
+                    },
+                    leading: Icon(Icons.done_outline, color: Color(0xffca9b2c)),
                     title: Text(
                       'تراجم المحدثين',
                       style: TextStyle(
@@ -194,7 +177,12 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   Divider(color: Color(0xffd0953b)),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FavoritesScreen(),));
+                    },
                     leading: Icon(
                       CupertinoIcons.bookmark_fill,
                       color: Color(0xffca9b2c),
@@ -213,37 +201,13 @@ class _MainScreenState extends State<MainScreen> {
                   SizedBox(height: 12),
 
                   SizedBox(height: 12),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 120,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: Color(0xffca9b2c)),
-                        color: Color(0xfffffde8).withAlpha(100),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'الاعدادات',
-                          style: TextStyle(
-                            color: Color(0xffca9b2c),
-                            fontSize: 18,
-                            fontFamily: 'cairo',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 12),
+
                   InkWell(
                     onTap: () {
                       sharedPrf.clear();
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                         (route) => false,
                       );
                     },
@@ -278,7 +242,7 @@ class _MainScreenState extends State<MainScreen> {
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     height: double.infinity,
@@ -288,118 +252,125 @@ class _MainScreenState extends State<MainScreen> {
                       image: AssetImage(Assets.imagesEdited2),
                     ),
                   ),
-                  Spacer(flex: 1),
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, top: 8),
+                    padding: const EdgeInsets.only(left: 16, top: 16),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
                           width: 150,
                           height: 150,
                           child: Image(image: AssetImage(Assets.imagesPic1)),
                         ),
-                        Text(
-                          textAlign: TextAlign.center,
-                          ' مرحبا بكم \nفي الموسوعة الحديثية',
-                          style: TextStyle(
-                            fontFamily: 'cairo',
-                            fontSize: 25,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffd0953b),
-                          ),
-                        ),
-                        SizedBox(height: 24),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchPage(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: Color(0xffca9b2c)),
-                              color: Color(0xfff8dcb8).withAlpha(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'البحث المتقدم',
-                                style: TextStyle(
-                                  color: Color(0xffca9b2c),
-                                  fontSize: 20,
-                                  fontFamily: 'cairo',
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  ' مرحبا بكم \nفي الموسوعة الحديثية',
+                                  style: TextStyle(
+                                    fontFamily: 'cairo',
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xffd0953b),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GeneralSearch(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: Color(0xffca9b2c)),
-                              color: Color(0xfff8dcb8).withAlpha(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'الأحاديث الشريفة',
-                                style: TextStyle(
-                                  color: Color(0xffca9b2c),
-                                  fontSize: 20,
-                                  fontFamily: 'cairo',
+                                SizedBox(height: 24),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SearchPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 160,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(color: Color(0xffca9b2c)),
+                                      color: Color(0xfff8dcb8).withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'البحث المتقدم',
+                                        style: TextStyle(
+                                          color: Color(0xffca9b2c),
+                                          fontSize: 20,
+                                          fontFamily: 'cairo',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BooksSources(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: Color(0xffca9b2c)),
-                              color: Color(0xfff8dcb8).withAlpha(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'الكتب والمصادر',
-                                style: TextStyle(
-                                  color: Color(0xffca9b2c),
-                                  fontSize: 20,
-                                  fontFamily: 'cairo',
+                                SizedBox(height: 16),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AboutMuhaddithScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 160,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(color: Color(0xffca9b2c)),
+                                      color: Color(0xfff8dcb8).withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'تراجم المحدثين',
+                                        style: TextStyle(
+                                          color: Color(0xffca9b2c),
+                                          fontSize: 20,
+                                          fontFamily: 'cairo',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(height: 16),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BooksSources(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 160,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(color: Color(0xffca9b2c)),
+                                      color: Color(0xfff8dcb8).withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'الكتب والمصادر',
+                                        style: TextStyle(
+                                          color: Color(0xffca9b2c),
+                                          fontSize: 20,
+                                          fontFamily: 'cairo',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        Spacer(flex: 1),
+                              SizedBox(height: 50),
                       ],
                     ),
                   ),

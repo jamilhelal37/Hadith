@@ -1,77 +1,142 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-class ProfileScreen extends StatelessWidget {
+import 'package:lottie/lottie.dart';
+import 'package:untitled1/generated/assets.dart';
+import 'package:untitled1/model/user_model.dart';
+import '../services/api_services.dart';
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  User? _user;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    // Simulate loading delay (remove in production)
+    await Future.delayed(Duration(milliseconds: 500));
+
+    // Replace this with your actual API call
+    Example: final user = await ApiRepositry().getCurrentUser();
+
+    // For now, let's create a dummy user (replace with your actual user data)
+setState(() {
+  _user=user;
+});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold
-      (
-      resizeToAvoidBottomInset: false,backgroundColor: Color(0xfffffde8),
-      body: SizedBox(
+
+    if (_user == null) {
+      return Scaffold(
+        backgroundColor: Color(0xfffffde8),
+        body: Column(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height:150,width:150,child: Lottie.asset(Assets.imagesLoading1)),
+            Center(
+              child: Text(textDirection: TextDirection.rtl,
+                'الرجاء الانتظار ..',
+                style: TextStyle(
+                  fontFamily: 'cairo',
+                  color: Color(0xffd0953b),
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xfffffde8),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(Assets.imagesBg3),
+            fit: BoxFit.fill,
+          ),
+        ),
         width: double.infinity,
-        child: Directionality(textDirection: TextDirection.rtl,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 30,right: 12,left: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xfffffde8),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          color: Color(0xfffffde8),
-                          Icons.settings_outlined,
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xfffffde8).withAlpha(190),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 12, left: 12),
+                  child: Row(
+                    children: [
+                      Spacer(flex: 2),
+                      Text(
+                        'الملف الشخصي',
+                        style: TextStyle(
+                          color: Color(0xffd0953b),
+                          fontFamily: 'cairo',
+                          fontSize: 23,
                         ),
                       ),
-                    ),
-                    Text(
-                      'الملف الشخصي',
-                      style: TextStyle(
-                        color: Color(0xffd0953b),
-                        fontFamily: 'cairo',
-                        fontSize: 23,
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Icon(
+                            textDirection: TextDirection.ltr,
+                            Icons.arrow_back,
+                            color: Color(0xffd0953b),
+                          ),
+                        ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-
-                        child: Icon(textDirection: TextDirection.ltr,Icons.arrow_back, color: Color(0xffd0953b)),
-                      ),
-                    ),
-
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 16),
               CircleAvatar(
                 radius: 70,
-                backgroundColor: Colors.white.withAlpha(70),
-                child: CircleAvatar(radius: 67),
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  radius: 67,
+                  backgroundColor: Color(0xffd0953b),
+                  child: Text(
+                    _user!.name.isNotEmpty ? _user!.name[0] : '?',
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 24),
               Container(
-                height: 380,
                 width: 320,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: Color(0xfffffde8),
                   boxShadow: [
-                    BoxShadow(blurRadius: 20, color: Colors.black.withAlpha(100)),
+                    BoxShadow(
+                      blurRadius: 20,
+                      color: Colors.black.withAlpha(100),
+                    ),
                   ],
                 ),
                 child: Padding(
@@ -79,109 +144,17 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: Row(
-                          children: [
-                            Text(
-                              'الاسم',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "cairo",
-                                fontSize: 20,
-                                color: Color(0xffd0953b),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 130,
-                            child: TextFormField(
-                              cursorColor: Colors.black.withAlpha(100),
-                              decoration: InputDecoration(
-                                labelText: "الاول",
-                                labelStyle: TextStyle(
-                                  color: Colors.black.withAlpha(80),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 3,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 6),
-                          SizedBox(
-                            width: 130,
-                            child: TextFormField(
-                              cursorColor: Colors.black.withAlpha(100),
-                              decoration: InputDecoration(
-                                labelText: "الثاني",
-                                labelStyle: TextStyle(
-                                  color: Colors.black.withAlpha(80),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 3,
-                                    color: Color(0xffd0953b),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 6),
                       SizedBox(
                         width: 266,
                         child: TextFormField(
+                          initialValue: _user!.name,
+                          readOnly: true,
                           cursorColor: Colors.black.withAlpha(100),
                           decoration: InputDecoration(
-                            labelText: "الرقم (+963)",
+                            labelText: "الاسم",
                             labelStyle: TextStyle(
-                              color: Colors.black.withAlpha(80),
-                            ),
-                            suffixIcon: Icon(
-                              size: 25,
-                              Icons.phone,
                               color: Color(0xffd0953b),
+                              fontSize: 16,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -201,26 +174,28 @@ class ProfileScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
                                 width: 3,
-                                color: Color(0xffaad09d),
+                                color: Color(0xffd0953b),
                               ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 6),
+                      SizedBox(height: 12),
                       SizedBox(
                         width: 266,
                         child: TextFormField(
+                          initialValue: _user!.username,
+                          readOnly: true,
                           cursorColor: Colors.black.withAlpha(100),
                           decoration: InputDecoration(
-                            labelText: "البريد الالكتروني",
+                            labelText: "اسم المستخدم",
                             labelStyle: TextStyle(
-                              color: Colors.black.withAlpha(80),
-                            ),
-                            suffixIcon: Icon(
-                              size: 25,
-                              Icons.email,
                               color: Color(0xffd0953b),
+                              fontSize: 16,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -243,26 +218,25 @@ class ProfileScreen extends StatelessWidget {
                                 color: Color(0xffd0953b),
                               ),
                             ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 6),
+                      SizedBox(height: 12),
                       SizedBox(
                         width: 266,
                         child: TextFormField(
+                          initialValue: _user!.email,
+                          readOnly: true,
                           cursorColor: Colors.black.withAlpha(100),
                           decoration: InputDecoration(
-                            labelText: "كلمة المرور",
+                            labelText: "البريد الإلكتروني",
                             labelStyle: TextStyle(
-                              color: Colors.black.withAlpha(80),
-                            ),
-                            suffixIcon: InkWell(
-                              onTap: () {},
-                              child: Icon(
-                                size: 25,
-                                CupertinoIcons.eye_slash_fill,
-                                color: Color(0xffd0953b),
-                              ),
+                              color: Color(0xffd0953b),
+                              fontSize: 16,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -285,12 +259,61 @@ class ProfileScreen extends StatelessWidget {
                                 color: Color(0xffd0953b),
                               ),
                             ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 6),
+                      SizedBox(height: 12),
+                      SizedBox(
+                        width: 266,
+                        child: TextFormField(
+                          initialValue: _user!.usertype == 'admin'
+                              ? 'مدير'
+                              : 'مستخدم',
+                          readOnly: true,
+                          cursorColor: Colors.black.withAlpha(100),
+                          decoration: InputDecoration(
+                            labelText: "نوع المستخدم",
+                            labelStyle: TextStyle(
+                              color: Color(0xffd0953b),
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: Color(0xffd0953b),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: Color(0xffd0953b),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 3,
+                                color: Color(0xffd0953b),
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         child: Container(
                           width: 125,
                           height: 60,

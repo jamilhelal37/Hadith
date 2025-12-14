@@ -29,8 +29,8 @@ class _GeneralSearchState extends State<GeneralSearch> {
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          'Content-Type':'application/json',
+          'Accept':'application/json',
         },
       ),
     );
@@ -89,6 +89,7 @@ class _GeneralSearchState extends State<GeneralSearch> {
                         child: Icon(Icons.arrow_back, color: Color(0xffd0953b)),
                       ),
                     ),
+
                     Text(
                       'البحث العام',
                       style: TextStyle(
@@ -98,14 +99,10 @@ class _GeneralSearchState extends State<GeneralSearch> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
                       child: SizedBox(
                         height: 50,
                         width: 50,
-                        child: Icon(
-                          CupertinoIcons.moon,
-                          color: Color(0xffd0953b),
-                        ),
+                        child: Icon(Icons.arrow_back, color: Color(0xfffffde8)),
                       ),
                     ),
                   ],
@@ -140,6 +137,13 @@ class _GeneralSearchState extends State<GeneralSearch> {
                       cursorColor: Color(0xffd0953b),
                       textDirection: TextDirection.rtl,
                       decoration: InputDecoration(
+                        prefixIcon: IconButton(
+                          onPressed: () => _searchHadith,
+                          icon: Icon(
+                            CupertinoIcons.search,
+                            color: Color(0xffd0953b),
+                          ),
+                        ),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: _clearSearch,
@@ -274,151 +278,69 @@ class _GeneralSearchState extends State<GeneralSearch> {
 
   Widget _buildHadithCard(Hadith hadith) {
     final isExpanded = _expandedStates[hadith.id] ?? false;
-
     return Card(
-      color: Colors.white,
+
+      color: Color(0xffFEF7FF),
       elevation: 2,
       margin: EdgeInsets.only(bottom: 16),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ExpansionPanelList(
-          elevation: 0,
-          expandedHeaderPadding: EdgeInsets.zero,
-          expansionCallback: (panelIndex, isExpanded) {
-            _toggleExplanation(hadith.id ?? 0);
-          },
-          children: [
-            ExpansionPanel(
-              headerBuilder: (context, isExpanded) {
-                return Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // Hadith Text
-                      if (hadith.hadithText != null)
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: Text(
-                            hadith.hadithText!,
-                            textDirection: TextDirection.rtl,
-                            maxLines: 100,
-                            overflow: TextOverflow.ellipsis,
+      child: Column(
+        children: [
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Hadith Text
+                if (hadith.hadithText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left:14,right: 14,top: 14,bottom: 6),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: Text(
+                        hadith.hadithText!,
+                        textDirection: TextDirection.rtl,
+                        maxLines: 100,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'cairo',
+                          fontSize: 16,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                // Book and Rawi info
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (hadith.book?.name != null)
+                          Text(
+                            'الكتاب: ${hadith.book!.name!}',
                             style: TextStyle(
                               fontFamily: 'cairo',
-                              fontSize: 16,
-                              height: 1.5,
+                              fontSize: hadith.book!.name!.length > 15 ? 10 : 13,
+                              color: Colors.grey[700],
                             ),
                           ),
-                        ),
-
-                      SizedBox(height: 12),
-
-                      // Book and Rawi info
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          if (hadith.book?.name != null)
-                            Text(
-                              'الكتاب: ${hadith.book!.name!}',
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: hadith.book!.name!.length > 15
-                                    ? 10
-                                    : 13,
-                                color: Colors.grey[700],
-                              ),
+                        if (hadith.hadithType != null)
+                          Text(
+                            'نوع الحديث :${hadith.hadithType!}',
+                            style: TextStyle(
+                              fontFamily: 'cairo',
+                              fontSize: 13,
+                              color: Colors.grey[700],
                             ),
-                          if (hadith.hadithType != null)
-                            Text(
-                              'نوع الحديث :${hadith.hadithType!}',
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: 13,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          if (hadith.rawi?.name != null)
-                            Text(
-                              'الراوي: ${hadith.rawi!.name!}',
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: 14,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          if (hadith.hadithNumber?.toString() != null)
-                            Text(
-                              'رقم الحديث: ${hadith.hadithNumber!}',
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: 14,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-              body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    if (hadith.explaining?.text != null)
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Color(0xfffef8e8),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Color(0xffd0953b).withOpacity(0.2),
-                            width: 1,
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'الشرح:',
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffd0953b),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              hadith.explaining!.text!,
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                fontFamily: 'cairo',
-                                fontSize: 14,
-                                color: Colors.grey[800],
-                                height: 1.6,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                    // Add other details here (rulings, etc.)
+                      ],
+                    ),
                     if (hadith.rulingOfMuhaddith?.text != null)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -443,14 +365,105 @@ class _GeneralSearchState extends State<GeneralSearch> {
                             ),
                         ],
                       ),
-                  ],
+                    Row(
+                      children: [
+                        if (hadith.rawi?.name != null)
+                          Text(
+                            'الراوي: ${hadith.rawi!.name!}',
+                            style: TextStyle(
+                              fontFamily: 'cairo',
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        if (hadith.hadithNumber?.toString() != null)
+                          Text(
+                            'رقم الحديث: ${hadith.hadithNumber!}',
+                            style: TextStyle(
+                              fontFamily: 'cairo',
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],),
                 ),
-              ),
-              isExpanded: isExpanded,
-              canTapOnHeader: true,
+              ],
             ),
-          ],
-        ),
+          ),
+
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: ExpansionPanelList(
+              elevation: 0,
+              expandedHeaderPadding: EdgeInsets.zero,
+              expansionCallback: (panelIndex, isExpanded) {
+                _toggleExplanation(hadith.id ?? 0);
+              },
+              children: [
+                ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return Column(children: []);
+                  },
+                  body: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        if (hadith.explaining?.text != null)
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Color(0xfffef8e8),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Color(0xffd0953b),
+                                width: 1,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'الشرح:',
+                                  style: TextStyle(
+                                    fontFamily: 'cairo',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xffd0953b),
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  hadith.explaining!.text!,
+                                  textDirection: TextDirection.rtl,
+                                  style: TextStyle(
+                                    fontFamily: 'cairo',
+                                    fontSize: 14,
+                                    color: Colors.grey[800],
+                                    height: 1.6,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                        // Add other details here (rulings, etc.)
+                      ],
+                    ),
+                  ),
+                  isExpanded: isExpanded,
+                  canTapOnHeader: true,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

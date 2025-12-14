@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled1/main.dart';
 import 'package:untitled1/view/login_screen.dart';
 import 'package:untitled1/view/main_screen.dart';
@@ -42,7 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Image(image: AssetImage(Assets.imagesPic1)),
               ),
               SizedBox(height: 8),
-              CircularProgressIndicator(color: Colors.black),
+              SizedBox(
+                width: 90,
+                height: 90,
+                child: LottieBuilder.asset('assets/images/Loading (1).json'),
+              ),
             ],
           ),
         ),

@@ -11,14 +11,14 @@ class BookModel {
   factory BookModel.fromJson(Map<String, dynamic> json) {
     return BookModel(
       id: json['id'] as int,
-      name: json['book_name'] as String,
+      name: json['name'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'book_name': name,
+      'name': name,
     };
   }
 
